@@ -10,9 +10,7 @@ sample_mode = 'argmax'
 data_path = './data'
 books = ['treninam.txt','validacijai.txt']
 
-test_sentence = input("\nEnter a sentence: ")
-
-if __name__ == '__main__':
+def spell(sentence):
     text  = read_text(data_path, books)
     vocab = tokenize(text)
     vocab = list(filter(None, set(vocab)))
@@ -22,7 +20,7 @@ if __name__ == '__main__':
     train_encoder, train_decoder, train_target = transform(
         vocab, maxlen, error_rate=error_rate, shuffle=False)
 
-    tokens = tokenize(test_sentence)
+    tokens = tokenize(sentence)
     tokens = list(filter(None, tokens))
     nb_tokens = len(tokens)
     misspelled_tokens, _, target_tokens = transform(
@@ -40,7 +38,14 @@ if __name__ == '__main__':
         maxlen, reverse, encoder_model, decoder_model, nb_tokens,
         sample_mode=sample_mode, random=False)
     
-    print('-')
-    print('Input sentence:  ', ' '.join([token for token in input_tokens]))
-    print('-')
-    print('Decoded sentence:', ' '.join([token for token in decoded_tokens]))
+    return decoded_tokens
+
+test_sentence = input("\nEnter a sentence: ")
+
+results = spell(test_sentence)
+result_sentence = ""
+
+for i in results:
+    result_sentence += i + " "
+
+print(result_sentence)
